@@ -1,6 +1,11 @@
 <main>
   <h1>DSP Controller</h1>
 
+  <p>
+    DSP Status:
+    {{ connected() ? 'CONNECTED' : 'DISCONNECTED' }}
+  </p>
+
   <section class="channel">
     <h2>Input 1</h2>
 
@@ -14,7 +19,7 @@
         max="12"
         [value]="gain()"
         (input)="onGainChange($event)"
-      >
+      />
 
       <span>{{ gain() }} dB</span>
     </div>
