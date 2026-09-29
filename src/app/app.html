@@ -1,18 +1,26 @@
-<h1>DSP Controller</h1>
+<main>
+  <h1>DSP Controller</h1>
 
-<h2>Input 1</h2>
+  <section class="channel">
+    <h2>Input 1</h2>
 
-<p>Gain: {{ gain() }} dB</p>
+    <div class="control gain-control">
+      <label>Gain</label>
 
-<input
-  type="range"
-  min="-60"
-  max="12"
-  [value]="gain()"
->
+      <input
+        class="gain-slider"
+        type="range"
+        min="-60"
+        max="12"
+        [value]="gain()"
+        (input)="onGainChange($event)"
+      >
 
-<p>Muted: {{ muted() }}</p>
+      <span>{{ gain() }} dB</span>
+    </div>
 
-<button (click)="toggleMute()">
-  {{ muted() ? 'Unmute' : 'Mute' }}
-</button>
+    <button (click)="toggleMute()">
+      {{ muted() ? 'Unmute' : 'Mute' }}
+    </button>
+  </section>
+</main>

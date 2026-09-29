@@ -13,4 +13,9 @@ export class App {
   toggleMute() {
     this.muted.set(!this.muted());
   }
+
+  onGainChange(event: Event) {
+    const input = event.target as HTMLInputElement;
+    this.gain.set(Number(input.value));
+  }
 }
