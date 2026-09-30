@@ -19,22 +19,41 @@ button {
   padding: 8px 16px;
 }
 
-.channel {
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  padding: 30px;
-  min-height: 400px;
+.channel-controls {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 30px;
 }
 
-.gain-control {
+.gain-control,
+.meter-control {
+  width: 90px;
+
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
 }
 
 .gain-slider {
   writing-mode: vertical-lr;
   direction: rtl;
   height: 280px;
+}
+
+.meter {
+  width: 24px;
+  height: 280px;
+  border: 1px solid #555;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.meter-fill {
+  width: 100%;
+  background: limegreen;
 }

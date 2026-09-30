@@ -10,6 +10,8 @@ export class App {
   gain = signal(-3);
   muted = signal(false);
   connected = signal(false);
+  meterLevel = signal(-60);
+
   socket = new WebSocket('ws://localhost:8080');
 
   constructor() {
@@ -21,11 +23,17 @@ export class App {
     this.socket.addEventListener('message', (event) => {
       const message = JSON.parse(event.data);
 
-      console.log('Message from DSP:', message);
+      if (message.type !== 'meter') {
+        console.log('Message from DSP:', message);
+      }
 
       if (message.type === 'deviceState') {
         this.gain.set(message.gain);
         this.muted.set(message.muted);
+      }
+
+      if (message.type === 'meter') {
+        this.meterLevel.set(message.level);
       }
     });
 

@@ -9,19 +9,31 @@
   <section class="channel">
     <h2>Input 1</h2>
 
-    <div class="control gain-control">
-      <label>Gain</label>
+    <div class="channel-controls">
+      <div class="gain-control">
+        <label>Gain</label>
 
-      <input
-        class="gain-slider"
-        type="range"
-        min="-60"
-        max="12"
-        [value]="gain()"
-        (input)="onGainChange($event)"
-      />
+        <input
+          class="gain-slider"
+          type="range"
+          min="-60"
+          max="12"
+          [value]="gain()"
+          (input)="onGainChange($event)"
+        />
 
-      <span>{{ gain() }} dB</span>
+        <span>{{ gain() }} dB</span>
+      </div>
+
+      <div class="meter-control">
+        <label>Level</label>
+
+        <div class="meter">
+          <div class="meter-fill" [style.height.%]="((meterLevel() + 60) / 60) * 100"></div>
+        </div>
+
+        <span>{{ meterLevel().toFixed(1) }} dB</span>
+      </div>
     </div>
 
     <button (click)="toggleMute()">

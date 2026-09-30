@@ -18,6 +18,20 @@ wss.on('connection', (socket) => {
     }),
   );
 
+  let meterLevel = -30;
+  const meterInterval = setInterval(() => {
+    const targetLevel = -30 + Math.random() * 18;
+
+    meterLevel += (targetLevel - meterLevel) * 0.3;
+
+    socket.send(
+      JSON.stringify({
+        type: 'meter',
+        level: meterLevel,
+      }),
+    );
+  }, 100);
+
   socket.on('message', (data) => {
     const message = JSON.parse(data.toString());
 
@@ -50,6 +64,7 @@ wss.on('connection', (socket) => {
 
   socket.on('close', () => {
     console.log('GUI disconnected');
+    clearInterval(meterInterval);
   });
 });
 
