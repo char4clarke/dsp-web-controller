@@ -1,43 +1,77 @@
-<main>
-  <h1>DSP Controller</h1>
+<main class="app-shell">
+  <header class="app-header">
+    <div>
+      <h1>DSP Controller</h1>
+      <p class="subtitle">Real-Time Audio Processing</p>
+    </div>
 
-  <p>
-    DSP Status:
-    {{ connected() ? 'CONNECTED' : 'DISCONNECTED' }}
-  </p>
+    <div class="status" [class.connected]="connected()">
+      <span class="status-light"></span>
+      {{ connected() ? 'CONNECTED' : 'DISCONNECTED' }}
+    </div>
+  </header>
 
   <section class="channel">
-    <h2>Input 1</h2>
+    <div class="channel-header">
+      <span class="channel-number">CH 01</span>
+      <h2>Input 1</h2>
+    </div>
 
     <div class="channel-controls">
+      <!-- GAIN -->
       <div class="gain-control">
-        <label>Gain</label>
+        <label>GAIN</label>
 
-        <input
-          class="gain-slider"
-          type="range"
-          min="-60"
-          max="12"
-          [value]="gain()"
-          (input)="onGainChange($event)"
-        />
+        <div class="vertical-control">
+          <div class="scale">
+            <span>+12</span>
+            <span>0</span>
+            <span>-12</span>
+            <span>-24</span>
+            <span>-36</span>
+            <span>-48</span>
+            <span>-60</span>
+          </div>
 
-        <span>{{ gain() }} dB</span>
-      </div>
-
-      <div class="meter-control">
-        <label>Level</label>
-
-        <div class="meter">
-          <div class="meter-fill" [style.height.%]="((meterLevel() + 60) / 60) * 100"></div>
+          <input
+            class="gain-slider"
+            type="range"
+            min="-60"
+            max="12"
+            [value]="gain()"
+            (input)="onGainChange($event)"
+          />
         </div>
 
-        <span>{{ meterLevel().toFixed(1) }} dB</span>
+        <span class="value-display">{{ gain() }} dB</span>
+      </div>
+
+      <!-- METER -->
+      <div class="meter-control">
+        <label>LEVEL</label>
+
+        <div class="vertical-control">
+          <div class="meter">
+            <div class="meter-fill" [style.height.%]="((meterLevel() + 60) / 72) * 100"></div>
+          </div>
+
+          <div class="scale">
+            <span>+12</span>
+            <span>0</span>
+            <span>-12</span>
+            <span>-24</span>
+            <span>-36</span>
+            <span>-48</span>
+            <span>-60</span>
+          </div>
+        </div>
+
+        <span class="value-display"> {{ meterLevel().toFixed(1) }} dB </span>
       </div>
     </div>
 
-    <button (click)="toggleMute()">
-      {{ muted() ? 'Unmute' : 'Mute' }}
+    <button class="mute-button" [class.active]="muted()" (click)="toggleMute()">
+      {{ muted() ? 'MUTED' : 'MUTE' }}
     </button>
   </section>
 </main>
