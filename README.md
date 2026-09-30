@@ -6,10 +6,14 @@ This project is a practice application for learning how a browser-based GUI can 
 
 Current features include:
 
-- Vertical gain fader
+- Vertical gain fader with dB scale
 - Mute control
+- Live audio level meter
+- Real-time WebSocket communication
 - DSP connection status
-- WebSocket connection between the Angular GUI and fake DSP server
+- Device-authoritative gain and mute state
+- Simulated real-time DSP meter data
+- Light audio-control interface built with SCSS
 
 ## Project Structure
 
@@ -18,8 +22,7 @@ dsp-controller/
 ├── src/                 # Angular frontend
 ├── fake-dsp/            # Fake DSP WebSocket server
 │   ├── server.js
-│   ├── package.json
-│   └── node_modules/
+│   └── package.json
 ├── angular.json
 ├── package.json
 └── README.md
@@ -34,7 +37,7 @@ The application uses two separate processes:
 
 You will need two terminal windows.
 
-### 1. Start the fake DSP
+### 1. Start the Fake DSP
 
 From the project root:
 
@@ -68,9 +71,7 @@ ng serve
 
 Then open:
 
-```text
 http://localhost:4200
-```
 
 When the Angular app connects successfully, the fake DSP terminal should print:
 
@@ -78,11 +79,7 @@ When the Angular app connects successfully, the fake DSP terminal should print:
 GUI connected
 ```
 
-The web interface should show:
-
-```text
-DSP Status: CONNECTED
-```
+The web interface should show that the DSP is connected.
 
 ## Testing the Connection
 
@@ -127,6 +124,7 @@ The Angular application currently tracks values such as:
 gain
 muted
 connected
+meterLevel
 ```
 
 Angular signals are used so that changes to application state automatically update the interface.
@@ -142,12 +140,61 @@ connected = false
       ↓
 Angular updates the UI
       ↓
-DSP Status: DISCONNECTED
+Status shows DISCONNECTED
+```
+
+### Device State
+
+The fake DSP acts as the authoritative source of device state. When the user changes a control, Angular sends a command to the DSP over the WebSocket. The DSP updates its state and sends the resulting state back to the GUI.
+
+For example:
+
+```text
+User moves gain fader
+        ↓
+Angular sends setGain
+        ↓
+Fake DSP updates gain
+        ↓
+DSP sends deviceState
+        ↓
+Angular updates the gain signal
+        ↓
+UI reflects the DSP state
+```
+
+The same pattern is used for the mute control.
+
+### Live Metering
+
+The fake DSP also generates simulated audio level data and sends meter updates to the GUI over the WebSocket.
+
+```text
+Fake DSP
+   ↓
+Generates meter level
+   ↓
+WebSocket meter message
+   ↓
+Angular updates meterLevel
+   ↓
+UI meter updates
+```
+
+The simulated meter data is smoothed so that it behaves more like an audio signal rather than jumping between completely random values.
+
+When the channel is muted, the simulated meter falls toward its minimum level.
+
+This creates two main types of real-time WebSocket communication:
+
+```text
+Controls: GUI → DSP → GUI
+Meters:   DSP → GUI
 ```
 
 ## Setup on a New Machine
 
-Install the project dependencies from the project root:
+Install the Angular project dependencies from the project root:
 
 ```bash
 npm install
@@ -190,14 +237,12 @@ fake-dsp/server.js
 
 Next steps for the project include:
 
-- Send gain changes from Angular to the fake DSP
-- Send mute changes from Angular to the fake DSP
-- Make the DSP the authoritative source of device state
-- Add live input level metering
 - Add parametric EQ controls
 - Add automatic WebSocket reconnection
 - Split the interface into reusable Angular components
 - Move WebSocket communication into an Angular service
+- Add additional channels
+- Improve real-time meter behavior and performance
 
 ## Technologies
 
