@@ -1,0 +1,63 @@
+<section class="channel">
+    <div class="channel-header">
+      <span class="channel-number">{{ channelNumber() }}</span>
+      <h2>{{ channelName() }}</h2>
+    </div>
+
+    <div class="channel-controls">
+      <!-- GAIN -->
+      <div class="gain-control">
+        <label>GAIN</label>
+
+        <div class="vertical-control">
+          <div class="scale">
+            <span>+12</span>
+            <span>0</span>
+            <span>-12</span>
+            <span>-24</span>
+            <span>-36</span>
+            <span>-48</span>
+            <span>-60</span>
+          </div>
+
+          <input
+            class="gain-slider"
+            type="range"
+            min="-60"
+            max="12"
+            [value]="gain()"
+            (input)="onGainChange($event)"
+          />
+        </div>
+
+        <span class="value-display">{{ gain() }} dB</span>
+      </div>
+
+      <!-- METER -->
+      <div class="meter-control">
+        <label>LEVEL</label>
+
+        <div class="vertical-control">
+          <div class="meter">
+            <div class="meter-fill" [style.height.%]="((meterLevel() + 60) / 72) * 100"></div>
+          </div>
+
+          <div class="scale">
+            <span>+12</span>
+            <span>0</span>
+            <span>-12</span>
+            <span>-24</span>
+            <span>-36</span>
+            <span>-48</span>
+            <span>-60</span>
+          </div>
+        </div>
+
+        <span class="value-display"> {{ meterLevel().toFixed(1) }} dB </span>
+      </div>
+    </div>
+
+    <button class="mute-button" [class.active]="muted()" (click)="toggleMute()">
+      {{ muted() ? 'MUTED' : 'MUTE' }}
+    </button>
+  </section>
